@@ -1,0 +1,8 @@
+.HeaderInfos svg {
+    padding: 8px;
+    border-radius: 16px;
+    color: var(--summary-bg);
+    -webkit-font-smoothing: antialiased;
+    font-size: 32px;
+    cursor: pointer;
+}

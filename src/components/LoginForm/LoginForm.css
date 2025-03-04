@@ -1,0 +1,25 @@
+.LoginForm h2 {
+    letter-spacing: 4px;
+}
+
+.LoginForm form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.LoginForm input {  
+    margin: 8px 0;
+    width: 220px;
+    border: none;
+    height: 24px;
+    outline: none;
+    border-radius: 4px;
+}
+
+.LoginForm input[type="submit"] {  
+    color: white;
+    background-color: black;
+}
+
+

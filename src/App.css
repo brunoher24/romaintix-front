@@ -1,38 +1,109 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: var(--back-bg);
   min-height: 100vh;
+  position: relative
+}
+
+.switch-form-btn {
+  background-color: transparent;
+  border: none;
+  color: #0000ee;
+  font-size: 16px;
+}
+
+.login-signup-logout-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 10px;
+  margin-bottom: 5px;
+  padding: 5px;
+  padding-bottom: 1em;
+  background-color: var(--summary-bg);
+  box-shadow: inset 2px 2px 1px var(--summary-edge), 3px 3px 3px var(--back-shadow);
+  color: var(--summary-color);
+  border-radius: 25px;
+  min-width: 15em;
 }
 
-.App-link {
-  color: #61dafb;
+.error {
+  color: red;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.success {
+  color: green;
+}
+
+.online-web-fonts-credits {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 12px;
+}
+
+input {
+  padding: 0 16px;
+}
+
+input::placeholder {
+  color: var(--antiheader);
+  font-size: 12px;
+  font-style: italic;
+}
+
+.main-content {
+  margin: 32px 10px 5px 10px;
+  text-align: left;
+  min-height: calc(100vh - 270px - 2.2em);
+  background: var(--body-bg);
+  box-shadow: inset 2px 2px 1px var(--body-edge), 3px 3px 3px var(--back-shadow);
+  margin-top: -10px;
+  padding: 10px;
+  position: relative;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+.play-section form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-bottom: 0.7em;
+}
+
+.error-message-invalid-word {
+  font-weight: bold;
+  color: var(--error);
+  margin-left: 0.7em;
+}
+
+#word-input {
+  font-size: 1.1em;
+  margin-left: 0.5em;
+  padding: 0.3em;
+  padding-left: 0.4em;
+  padding-right: 1.6em;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+#play-form-submit-input {
+  font-size: 1.1em;
+  margin-left: 0.5em;
+  padding: 0.3em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+.guess-table {
+  width: min(32em, 100%);
+  margin-top: 0.5em;
+}
+
+th.number {
+  text-align: right;
+  padding-left: 0.3em;
 }
