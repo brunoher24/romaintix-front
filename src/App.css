@@ -2,7 +2,8 @@
   text-align: center;
   background-color: var(--back-bg);
   min-height: 100vh;
-  position: relative
+  position: relative;
+  padding-bottom: 32px;
 }
 
 .switch-form-btn {
@@ -12,12 +13,12 @@
   font-size: 16px;
 }
 
-.login-signup-logout-section {
+.login-signup-infos-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 32px;
   padding: 5px;
   padding-bottom: 1em;
   background-color: var(--summary-bg);
@@ -107,3 +108,31 @@ th.number {
   text-align: right;
   padding-left: 0.3em;
 }
+
+.word {
+  padding-left: 0.3em;
+}
+
+.emoji, .emoji-td {
+  padding-left: 0.3em
+}
+
+.infos-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.infos-section table.story {
+  align-self: center;
+  border-collapse: collapse;
+}
+
+.story thead {
+  background-image: linear-gradient(var(--summary-edge), var(--summary-shadow));
+  border-radius: 5px;
+}
+
+.story td {
+  padding: 0.2em;
+}
+

@@ -57,3 +57,15 @@ h1, h2 {
   font-size: 14px;
 }
 
+.align-right {
+  text-align: right;
+}
+
+.bolder {
+  font-weight: 900;
+}
+
+.number-top, .emoji-top {
+  padding: 0.2em 0.6em;
+}
+

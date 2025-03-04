@@ -18,6 +18,7 @@ import Popup from "./components/Popup/Popup";
 import userService from "./services/userService";
 import dico from "./assets/dico.json";
 import degreesPercents from "./assets/degreesPercents.json";
+import ProgressBar from "./components/ProgressBar/ProgressBar";
 
 function App() {
   const [playedWords, setPlayedWords] = useState([]);
@@ -30,7 +31,7 @@ function App() {
   const dispatch = useDispatch();
   const auth = getAuth();
 
-  const { getAllData, setAllData, clear } = useMemo(() => new StorageService(), []);
+  const storage = useMemo(() => new StorageService(), []);
 
   const popup = useSelector(selectPopup);
   const { wordIndex } = useSelector(selectUser);
@@ -40,6 +41,8 @@ function App() {
     rootMargin: "0px",
     threshold: 1.0
   });
+
+  const emojis = ["🥳", "😱", "🔥", "🥵", "😎", "🥶"];
 
   useEffect(() => {
     const onAuthStateChange = () => {
@@ -55,12 +58,12 @@ function App() {
           setFormThatShouldBeDisplayed("logout");
           const { uid, email } = user;
           const nickname = email.split("@")[0];
-          let { wordIndex } = getAllData();
+          let { wordIndex } = storage.getAllData();
           // si l'utilisateur vient de se connecter, et qu'il n'y a rien dans le localStorage 
           if (wordIndex === -1) {
             const userInfos = await userService.readOne(uid);
             wordIndex = userInfos.wordIndex;
-            setAllData({ uid, nickname, wordIndex });
+            storage.setAllData({ uid, nickname, wordIndex });
           }
 
           dispatch(setLoggedInInfos({ uid, nickname, wordIndex }));
@@ -68,7 +71,7 @@ function App() {
           // *** c'est le cas où l'utilisateur se déconnecte OU recharge le site en étant déjà déconnecté
         } else {
           dispatch(resetUserInfos());
-          clear();
+          storage.clear();
           setFormThatShouldBeDisplayed("login"); //
         }
       });
@@ -79,7 +82,7 @@ function App() {
       unsubscribe();
     };
 
-  }, [auth, dispatch, setAllData, getAllData, clear]);
+  }, [auth, dispatch, storage]);
 
   const play = async e => {
     e.preventDefault();
@@ -87,7 +90,6 @@ function App() {
     if (index > -1) {
       setLastPlayedWord(playedWords[index]);
     } else if (!dico.includes(wordBeeingPlayed)) {
-      console.log("Invalid");
       setErrorMessageInvalidWord("Essaye avec des vrais mots, c'est plus drôle.")
     }
     else {
@@ -102,7 +104,7 @@ function App() {
         number: playedWords.length + 1
       };
       const playedWords_ = [...playedWords, newWord];
-      playedWords_.sort((a, b) => a.degrees - b.degrees);
+      playedWords_.sort((a, b) => b.degrees - a.degrees);
       setPlayedWords(playedWords_);
       setLastPlayedWord(newWord);
 
@@ -118,6 +120,7 @@ function App() {
       // }
     }
   };
+
 
   const playFormChangeHAndler = e => {
     setWordBeeingPlayed(e.target.value);
@@ -153,13 +156,22 @@ function App() {
     setFormThatShouldBeDisplayed(f => f === "login" ? "signup" : "login");
   }
 
+  const setCorrectEmojiToTemperature = (temperature) => {
+    if (temperature < 0) return emojis[5]
+    if (temperature < 25) return emojis[4]
+    if (temperature < 36) return emojis[3]
+    if (temperature < 49) return emojis[2]
+    if (temperature < 64.3) return emojis[1]
+    return emojis[0];
+  }
+
   return (
     <div className="App">
       {popup.show && <Popup />}
 
       <HeaderInfos />
 
-      <section className="login-signup-logout-section">
+      <section className="login-signup-infos-section">
         {
           formThatShouldBeDisplayed === "login" && (
             <div>
@@ -179,9 +191,26 @@ function App() {
             </div>
           )
         }
+        {
+          formThatShouldBeDisplayed === "logout" && (
+            <div className="infos-section">
+              <h1>Mot à trouver n° {wordIndex + 1} / 5</h1>
+
+              <table className="story">
+                <thead>
+                  <tr><th className="number-top"><b>‰</b></th><th className="emoji-top">🌡</th><th className="number-top"><b>°C</b></th></tr>
+                </thead>
+                <tbody><tr><td className="number-top">1000</td><td className="emoji">🥳</td><td className="number-top">100.00</td></tr>
+                  <tr><td className="number-top">999</td><td className="emoji-top">😱</td><td className="number-top">64.29</td></tr>
+                  <tr><td className="number-top">990</td><td className="emoji-top">🔥</td><td className="number-top">48.99</td></tr>
+                  <tr><td className="number-top">900</td><td className="emoji-top">🥵</td><td className="number-top">35.99</td></tr>
+                  <tr><td className="number-top">1</td><td className="emoji-top">😎</td><td className="number-top">24.99</td></tr>
+                  <tr><td className="number-top"></td><td className="emoji-top">🥶</td><td className="number-top">-0.01</td></tr>
+                </tbody></table>
+            </div>
+          )
+        }
       </section>
-
-
 
       {
         formThatShouldBeDisplayed === "logout" && (
@@ -198,31 +227,43 @@ function App() {
               <table className="guess-table">
                 <thead>
                   <tr>
-                    <th class="number order" id="chronoOrder">Nº</th>
-                    <th class="number order" id="temperatureOrder">°C</th>
-                    <th class="emoji">🌡</th>
-                    <th class="number">‰</th>
-                    <th class="progress">Progression</th>
+                    <th className="number order" id="chronoOrder">Nº</th>
+                    <th className="word">Mot</th>
+                    <th className="number order" id="temperatureOrder">°C</th>
+                    <th className="emoji">🌡</th>
+                    <th className="number">‰</th>
+                    <th className="progress">Progression</th>
                   </tr>
-                  {lastPlayedWord.number > 0 && (
-                    <tr id="guessed" class="guesses">
-                      <td>{playedWords.length + 1}</td>
-                      <td>{lastPlayedWord.value}</td>
-                      <td>{lastPlayedWord.degrees}</td>
-                      <td>{lastPlayedWord.percents}</td>
-                      <td></td>
+                  {(lastPlayedWord.number > 0 && playedWords.length > 1) && (
+                    <tr className={lastPlayedWord.percents > 0 ? "bolder" : "guesses"}>
+                      <td className="align-right">{lastPlayedWord.number}</td>
+                      <td className="word">{lastPlayedWord.value}</td>
+                      <td className="align-right">{lastPlayedWord.degrees}</td>
+                      <td className="emoji-td">{setCorrectEmojiToTemperature(lastPlayedWord.degrees)}</td>
+                      {lastPlayedWord.percents > 0 && (
+                        <td className="align-right">{lastPlayedWord.percents}</td>
+                      )}
+                      {lastPlayedWord.percents > 0 && (
+                        <td><ProgressBar animated={true} percents={lastPlayedWord.percents} /></td>
+                      )}
                     </tr>
                   )}
-                 
+                  <tr><td style={{ color: "#00000000" }}>_</td></tr>
                 </thead>
                 <tbody>
+
                   {playedWords.map((word, index) => (
-                    <tr key={index}>
-                      <td>{word.number}</td>
-                      <td>{word.value}</td>
-                      <td>{word.degrees}</td>
-                      <td>{word.percents}</td>
-                      <td></td>
+                    <tr key={index} className={word.percents > 0 ? "bolder" : "guesses"}>
+                      <td className="align-right">{word.number}</td>
+                      <td className="word">{word.value}</td>
+                      <td className="align-right">{word.degrees}</td>
+                      <td className="emoji-td">{setCorrectEmojiToTemperature(word.degrees)}</td>
+                      {word.percents > 0 && (
+                        <td className="align-right">{word.percents}</td>
+                      )}
+                      {word.percents > 0 && (
+                        <td><ProgressBar animated={word.number === lastPlayedWord.number} percents={word.percents} /></td>
+                      )}
                     </tr>
                   ))}
                 </tbody>

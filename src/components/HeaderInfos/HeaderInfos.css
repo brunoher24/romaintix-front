@@ -3,6 +3,6 @@
     border-radius: 16px;
     color: var(--summary-bg);
     -webkit-font-smoothing: antialiased;
-    font-size: 32px;
+    font-size: 24px;
     cursor: pointer;
 }
