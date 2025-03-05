@@ -1,0 +1,18 @@
+.infos-section {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .infos-section table.story {
+    align-self: center;
+    border-collapse: collapse;
+  }
+  
+  .story thead {
+    background-image: linear-gradient(var(--summary-edge), var(--summary-shadow));
+    border-radius: 5px;
+  }
+  
+  .story td {
+    padding: 0.2em;
+  }

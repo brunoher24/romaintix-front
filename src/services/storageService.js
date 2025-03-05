@@ -1,7 +1,8 @@
 const emptyData = { 
     uid: "", 
     nickname: "",
-    wordIndex: -1
+    wordIndex: -1,
+    playedWords: []
 };
 
 class StorageService {
@@ -11,6 +12,7 @@ class StorageService {
 
     getAllData() {
         const data = localStorage.getItem('romaintix2404');
+        console.log(data)
         return data ? JSON.parse(data) : emptyData;  
     }
     getData(key) {

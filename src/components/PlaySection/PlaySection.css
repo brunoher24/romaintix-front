@@ -1,0 +1,50 @@
+.play-section form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-bottom: 0.7em;
+  }
+  
+  .error-message-invalid-word {
+    font-weight: bold;
+    color: var(--error);
+    margin-left: 0.7em;
+  }
+  
+  #word-input {
+    font-size: 1.1em;
+    margin-left: 0.5em;
+    padding: 0.3em;
+    padding-left: 0.4em;
+    padding-right: 1.6em;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+  
+  #play-form-submit-input {
+    font-size: 1.1em;
+    margin-left: 0.5em;
+    padding: 0.3em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+  
+  .guess-table {
+    width: min(32em, 100%);
+    margin-top: 0.5em;
+  }
+  
+  th.number {
+    text-align: right;
+    padding-left: 0.3em;
+  }
+  
+  .word {
+    padding-left: 0.3em;
+  }
+  
+  .emoji, .emoji-td {
+    padding-left: 0.3em
+  }

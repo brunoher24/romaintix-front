@@ -65,6 +65,14 @@ h1, h2 {
   font-weight: 900;
 }
 
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
+
 .number-top, .emoji-top {
   padding: 0.2em 0.6em;
 }

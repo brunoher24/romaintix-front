@@ -1,0 +1,36 @@
+.congrats-popup {
+    position: relative;
+      clear: both;
+      width: auto;
+      margin: 0 0 2px 0;
+      padding: 1em;
+      overflow: hidden;
+      background-color: var(--success-bg);
+      box-shadow: inset 2px 2px 2px var(--success-shadow), 2px 2px var(--body-edge);
+      border-radius: 10px;
+      animation: appear 1s forwards ease-in-out;
+  }
+  
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      max-height: 0;
+      margin-bottom: 0;
+    }
+    100% {
+      opacity: 1;
+      max-height: 1000px;
+      margin-bottom: 16px;
+    }
+  }
+  
+  .icon-img-num-ctnr {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+  }
+  
+  .img-num {
+    height: 24px;
+    margin-left: 4px;
+  }
