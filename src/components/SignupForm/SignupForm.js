@@ -81,7 +81,6 @@ function SignupForm() {
       */
 
       const userCredential = await createUserWithEmailAndPassword(auth, nickname + "@romaintix2404.com", password);
-      console.log(userCredential);
       if (userCredential.error) {
         throw new FirebaseError({ code: 'auth/email-already-in-use' })
       }

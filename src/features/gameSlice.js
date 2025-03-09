@@ -5,6 +5,7 @@ const storage = new StorageService();
 
 const initialState = {
   playedWords: storage.getData("playedWords") || [],
+  wordHasBeenFound: storage.getData("wordHasBeenFound") || false,
 };
 
 export const gameSlice = createSlice({
@@ -14,12 +15,16 @@ export const gameSlice = createSlice({
     updatePlayedWords: (state, action) => {
         storage.setData("playedWords", action.payload);
         state.playedWords = action.payload;
+    },
+    updateWordHasBeenFound: (state, action) => {
+      state.wordHasBeenFound = action.payload;
     }
+
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { updatePlayedWords } = gameSlice.actions
+export const { updatePlayedWords, updateWordHasBeenFound } = gameSlice.actions
 export const selectGame = state => state.game;
 
 

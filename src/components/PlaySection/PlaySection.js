@@ -1,8 +1,11 @@
 // react
 import { useState } from 'react';
+// firebase
+
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { selectGame, updatePlayedWords } from '../../features/gameSlice';
+import { selectGame, updatePlayedWords, updateWordHasBeenFound } from '../../features/gameSlice';
+import { selectUser } from '../../features/userSlice';
 //services
 import { setCorrectEmojiToTemperature } from '../../services/utilities';
 // components
@@ -21,6 +24,7 @@ function PlaySection() {
     const [errorMessageInvalidWord, setErrorMessageInvalidWord] = useState("");
 
     const { playedWords } = useSelector(selectGame);
+    const { wordIndex } = useSelector(selectUser)
     const dispatch = useDispatch();
 
     // TEST
@@ -51,7 +55,7 @@ function PlaySection() {
         }
     }
 
-    const play = (wordBeeingPlayed_) => {
+    const play = async (wordBeeingPlayed_) => {
         const index = playedWords.findIndex(w => w.value === wordBeeingPlayed_);
         if (index > -1) {
             setLastPlayedWord(playedWords[index]);
@@ -61,30 +65,31 @@ function PlaySection() {
         else {
             setErrorMessageInvalidWord("");
             // TEST
-            const score = Math.round(Math.random() * 12430 - 6000) / 100;
+            // const score = Math.round(Math.random() * 12430 - 6000) / 100;
             // TEST
 
             // TODO
-            // try {
-            //   const getWordScore = httpsCallable(functions, 'getWordScore');
-            //   const result = await getWordScore({ wordIndex, wordBeeingPlayed })
-            //   const score = result.data;
-            //   console.log(score);
-            const percents = score < 25 ? 0 : degreesPercents.find(dp => dp.d === score).p;
-            const newWord = {
-                value: wordBeeingPlayed_,
-                degrees: score,
-                percents: percents,
-                number: playedWords.length + 1,
-                emoji: setCorrectEmojiToTemperature(score)
-            };
-            const playedWords_ = [...playedWords, newWord];
-            playedWords_.sort((a, b) => b.degrees - a.degrees);
-            setLastPlayedWord(newWord);
-            return [playedWords_, newWord];
-            // } catch (err) {
-            //   console.log("Une erreur est survenue !", err);
-            // }
+            try {
+                // const getWordScore = httpsCallable(functions, 'getWordScore');
+                // const result = await getWordScore({ wordIndex, wordBeeingPlayed })
+                const score = 12;
+                console.log(score);
+                // TODO si mot trouvé, dispatch(updateWordHasBeenFound(true))
+                const percents = score < 25 ? 0 : degreesPercents.find(dp => dp.d === score).p;
+                const newWord = {
+                    value: wordBeeingPlayed_,
+                    degrees: score,
+                    percents: percents,
+                    number: playedWords.length + 1,
+                    emoji: setCorrectEmojiToTemperature(score)
+                };
+                const playedWords_ = [...playedWords, newWord];
+                playedWords_.sort((a, b) => b.degrees - a.degrees);
+                setLastPlayedWord(newWord);
+                return [playedWords_, newWord];
+            } catch (err) {
+            console.log("Une erreur est survenue !", err);
+            }
         }
         return [];
     };
@@ -96,25 +101,25 @@ function PlaySection() {
     const getWordsHistoric = e => {
         if (e.code === "ArrowUp" || e.key === "ArrowUp" || e.keyCode === 38) {
             if (playedWords.length > 0) {
-                if (playedWordRewardIndex === 0) {
-                    setPlayedWordRewardIndex(playedWords.length - 1);
-                } else if (playedWordRewardIndex > 0) {
-                    setPlayedWordRewardIndex(i => i - 1);
-                } else if (playedWordRewardIndex === -1) {
-                    setPlayedWordRewardIndex(playedWords.length - 1);
+                let playedWordRewardIndex_ = playedWordRewardIndex;
+                if (playedWordRewardIndex <= 0) {
+                    playedWordRewardIndex_ = playedWords.length - 1;
+                } else {
+                    playedWordRewardIndex_ --;
                 }
-                setWordBeeingPlayed(playedWords[playedWordRewardIndex].value);
+                setPlayedWordRewardIndex(playedWordRewardIndex_);
+                setWordBeeingPlayed(playedWords[playedWordRewardIndex_].value);
             }
         } else if (e.code === "ArrowDown" || e.key === "ArrowDown" || e.keyCode === 40) {
             if (playedWords.length > 0) {
-                if (playedWordRewardIndex === -1) {
-                    setPlayedWordRewardIndex(0);
-                } else if (playedWordRewardIndex < playedWords.length - 1) {
-                    setPlayedWordRewardIndex(i => i + 1);
-                } else if (playedWordRewardIndex === playedWords.length - 1) {
-                    setPlayedWordRewardIndex(0);
+                let playedWordRewardIndex_ = playedWordRewardIndex;
+                if (playedWordRewardIndex === -1 || playedWordRewardIndex === playedWords.length - 1) {
+                   playedWordRewardIndex_ = 0;
+                } else {
+                    playedWordRewardIndex_++;
                 }
-                setWordBeeingPlayed(playedWords[playedWordRewardIndex].value);
+                setPlayedWordRewardIndex(playedWordRewardIndex_);
+                setWordBeeingPlayed(playedWords[playedWordRewardIndex_].value);
             }
         }
     };

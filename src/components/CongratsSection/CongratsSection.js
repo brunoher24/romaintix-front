@@ -1,3 +1,6 @@
+//redux
+import { useDispatch } from "react-redux";
+import { updateWordHasBeenFound } from "../../features/gameSlice";
 // services
 import { emojis, numToEmojis } from "../../services/utilities";
 // style
@@ -5,6 +8,7 @@ import "./CongratsSection.css";
 
 
 const CongratsSection = ({playedWords}) => {
+  const dispatch = useDispatch()
 
   const displayStats = () => {
     return emojis.slice(1).map(emoji => {
@@ -18,6 +22,7 @@ const CongratsSection = ({playedWords}) => {
 
   const findNextWord = () => {
     // TODO
+    dispatch(updateWordHasBeenFound(false));
   };
 
   return (

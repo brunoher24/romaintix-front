@@ -2,16 +2,14 @@ import { useState, useEffect, useMemo/*, useRef */} from "react";
 //redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPopup } from "./features/popupSlice";
-import { resetUserInfos, selectUser, setLoggedInInfos } from "./features/userSlice";
+import { resetUserInfos, setLoggedInInfos } from "./features/userSlice";
+import { selectGame } from "./features/gameSlice";
 // firebase
 import { getAuth, onAuthStateChanged/*, connectAuthEmulator */ } from "firebase/auth";
 // import { doc, onSnapshot } from "firebase/firestore";
-import { httpsCallable } from "firebase/functions";
-import { /*db,*/ functions } from './services/firebaseInit';
 // services
 import StorageService from "./services/storageService";
 import userService from "./services/userService";
-import { setCorrectEmojiToTemperature } from "./services/utilities";
 //hooks
 import useElementOnScreen from "./hooks/intersectionObserverApi";
 // components
@@ -28,10 +26,10 @@ import './App.css';
 
 function App() {
   const [formThatShouldBeDisplayed, setFormThatShouldBeDisplayed] = useState("login");
-  const [wordHasBeenFound, setWordHasBeenFound] = useState(false);
   
   const popup = useSelector(selectPopup);
-  const { wordIndex } = useSelector(selectUser);
+  const { wordHasBeenFound } = useSelector(selectGame);
+
   const dispatch = useDispatch();
 
   const storage = useMemo(() => new StorageService(), []);
@@ -123,20 +121,16 @@ function App() {
           )
         }
       </section>
-
       {
         formThatShouldBeDisplayed === "logout" && (
           <article className="main-content">
             {wordHasBeenFound && (
               <CongratsSection/>
             )}
-
             <PlaySection/>       
           </article>
         )
       }
-
-
       <div className="online-web-fonts-credits">Icons made from <a href="https://www.onlinewebfonts.com/icon">svg icons</a>is licensed by CC BY 4.0</div>
     </div>
   );

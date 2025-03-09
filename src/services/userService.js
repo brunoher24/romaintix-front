@@ -13,13 +13,15 @@ const userService = {
 
     async create(uid, nickname) {
         try {
-            await setDoc(doc(db, "users", uid), {
+            const newUser = {
                 uid,
                 nickname,
                 wordIndex: 0,
                 createdAt: serverTimestamp(),
                 updatedAt: serverTimestamp(),
-            });
+            };
+            console.log(newUser);
+            await setDoc(doc(db, "users", uid), newUser);
           
             return true;
         } catch(error) {
