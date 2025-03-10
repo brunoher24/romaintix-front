@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo/*, useRef */} from "react";
+import { useState, useEffect/*, useRef */} from "react";
 //redux
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPopup } from "./features/popupSlice";
@@ -23,7 +23,6 @@ import PlaySection from "./components/PlaySection/PlaySection";
 // style
 import './App.css';
 
-
 function App() {
   const [formThatShouldBeDisplayed, setFormThatShouldBeDisplayed] = useState("login");
   
@@ -32,7 +31,6 @@ function App() {
 
   const dispatch = useDispatch();
 
-  const storage = useMemo(() => new StorageService(), []);
 
   const auth = getAuth();
 
@@ -51,10 +49,11 @@ function App() {
       // *** l'utilisateur arrive sur le site déjà connecté
       // *** l'utilisateur arrive sur le site déjà déconnecté
       return onAuthStateChanged(auth, async user => {
+        const storage = new StorageService();
         // si l'utilisateur se connecte ou arrive sur le site déjà connecté
         if (user) {
           setFormThatShouldBeDisplayed("logout");
-          const { uid, email } = user;
+          const { uid, email, accessToken } = user;
           const nickname = email.split("@")[0];
           let wordIndex = storage.getData("wordIndex");
           // si l'utilisateur vient de se connecter, et qu'il n'y a rien dans le localStorage 
@@ -64,9 +63,10 @@ function App() {
             storage.setData('uid', uid);
             storage.setData('nickname', nickname);
             storage.setData('wordIndex', wordIndex);
+            storage.setData('firebaseIdToken', accessToken);
           }
 
-          dispatch(setLoggedInInfos({ uid, nickname, wordIndex }));
+          dispatch(setLoggedInInfos({ uid, nickname, wordIndex, firebaseIdToken: accessToken}));
           // emulateGame();
           // emulateGame();
           // *** c'est le cas où l'utilisateur se déconnecte OU recharge le site en étant déjà déconnecté
@@ -83,11 +83,13 @@ function App() {
       unsubscribe();
     };
 
-  }, [auth, dispatch, storage]);
+  }, [auth, dispatch]);
 
   const showLoginSignupForm = () => {
     setFormThatShouldBeDisplayed(f => f === "login" ? "signup" : "login");
   };
+
+  
 
   return (
     <div className="App">

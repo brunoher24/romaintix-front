@@ -1,14 +1,15 @@
 //redux
-import { useDispatch } from "react-redux";
-import { updateWordHasBeenFound } from "../../features/gameSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGame, updateWordHasBeenFound } from "../../features/gameSlice";
 // services
 import { emojis, numToEmojis } from "../../services/utilities";
 // style
 import "./CongratsSection.css";
 
 
-const CongratsSection = ({playedWords}) => {
-  const dispatch = useDispatch()
+const CongratsSection = () => {
+  const {playedWords} = useSelector(selectGame);
+  const dispatch = useDispatch();
 
   const displayStats = () => {
     return emojis.slice(1).map(emoji => {

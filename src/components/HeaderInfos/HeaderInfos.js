@@ -1,12 +1,17 @@
+//react
 import { useDispatch, useSelector } from 'react-redux';
+// firebase
 import { getAuth, signOut } from "firebase/auth";
-
-import { selectUser } from '../../features/userSlice';
-import './HeaderInfos.css';
+// fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOut, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+// redux
+import { selectUser } from '../../features/userSlice';
 import { show } from '../../features/popupSlice';
-
+// services
+import StorageService from '../../services/storageService';
+//style
+import './HeaderInfos.css';
 
 function HeaderInfos() {
     const infosTitle = 'Les règles c\'est quoi ?';
@@ -15,39 +20,41 @@ function HeaderInfos() {
 
     const { nickname, uid } = useSelector(selectUser);
     const dispatch = useDispatch()
-    
+
     const auth = getAuth();
 
     const logout = () => {
         signOut(auth)
         .catch(error => {
-          console.log(error);
+            console.log(error);
+        }).then(() => {
+            new StorageService().clear();
         });
-      };
+    };
 
-      const showInfosPopup = () => {
-        dispatch(show({title:infosTitle, text:infosMessage}));
-      }
+    const showInfosPopup = () => {
+        dispatch(show({ title: infosTitle, text: infosMessage }));
+    }
     // const [userInfos, setUserInfos] = useState({});
 
     // useEffect(() => {}, []);
-    
+
     return (
         <header className="HeaderInfos">
-        {
-            (nickname && uid) && (
-                <FontAwesomeIcon
-                    className=''
-                    icon={faSignOut}
-                    onClick={logout}
-                />
-            )
-        }
-        <FontAwesomeIcon
-            className=''
-            icon={faInfoCircle}
-            onClick={showInfosPopup}
-                />
+            {
+                (nickname && uid) && (
+                    <FontAwesomeIcon
+                        className=''
+                        icon={faSignOut}
+                        onClick={logout}
+                    />
+                )
+            }
+            <FontAwesomeIcon
+                className=''
+                icon={faInfoCircle}
+                onClick={showInfosPopup}
+            />
         </header>
     );
 }

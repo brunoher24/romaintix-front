@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import StorageService from '../services/storageService';
 
-const storage = new StorageService();
 
 const initialState = {
-  playedWords: storage.getData("playedWords") || [],
-  wordHasBeenFound: storage.getData("wordHasBeenFound") || false,
+  playedWords: new StorageService().getData("playedWords") || [],
+  wordHasBeenFound: new StorageService().getData("wordHasBeenFound") || false,
 };
 
 export const gameSlice = createSlice({
@@ -13,8 +12,9 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     updatePlayedWords: (state, action) => {
-        storage.setData("playedWords", action.payload);
-        state.playedWords = action.payload;
+      const storage = new StorageService();
+      storage.setData("playedWords", action.payload);
+      state.playedWords = action.payload;
     },
     updateWordHasBeenFound: (state, action) => {
       state.wordHasBeenFound = action.payload;

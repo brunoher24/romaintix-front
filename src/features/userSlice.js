@@ -4,6 +4,7 @@ const initialState = {
   uid: "",
   nickname: "",
   wordIndex: -1,
+  firebaseIdToken: ""
 }
 
 export const userSlice = createSlice({
@@ -11,10 +12,11 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoggedInInfos: (state, action) => {
-        const {uid, nickname, wordIndex} = action.payload;
+        const {uid, nickname, wordIndex, firebaseIdToken} = action.payload;
         state.uid = uid;
         state.nickname = nickname;
         state.wordIndex = wordIndex;
+        state.firebaseIdToken = firebaseIdToken
     },
 
     setWordIndex: (state, action) => {

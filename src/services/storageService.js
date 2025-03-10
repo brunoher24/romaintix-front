@@ -3,7 +3,8 @@ const emptyData = {
     nickname: "",
     wordIndex: -1,
     playedWords: [],
-    wordHasBeenFound: false
+    wordHasBeenFound: false,
+    firebaseIdToken: ""
 };
 
 class StorageService {
@@ -21,6 +22,7 @@ class StorageService {
     setData(key, newValue) {
         this.data[key] = newValue;
         localStorage.setItem('romaintix2404', JSON.stringify(this.data));
+        console.log(this.data);
     }
     setAllData(data) {
         this.data = {...data};

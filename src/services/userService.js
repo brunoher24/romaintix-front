@@ -1,4 +1,4 @@
-
+import axios from "axios";
 import { db } from './firebaseInit';
 import { 
     doc, 
@@ -7,10 +7,11 @@ import {
     updateDoc,
     serverTimestamp
 } from "firebase/firestore";
+import StorageService from './storageService';
+
 
 
 const userService = {
-
     async create(uid, nickname) {
         try {
             const newUser = {
@@ -78,6 +79,32 @@ const userService = {
             return { error };
         }
     },
+
+    async getWordScore(guessWord, wordIndex) {
+        const env = process.env;
+        const _ = "REACT_APP_";
+        const urlPrefix = env[`${_}${env[_+'ENVIRONMENT'].toUpperCase()}_BACKEND_URL`];
+        try {
+            const result = await axios({
+                method: 'post',
+                url: `${urlPrefix}/api/play`,
+                data: {
+                    wordIndex,
+                    guessWord
+                },
+                headers: {
+                Authorization: "Bearer " + new StorageService().getData("firebaseIdToken")
+                }
+            });
+            console.log(result.data);
+            return result.data.data;
+        } catch(error) {
+            console.log(error);
+            return { error };
+        }
+        
+    }
+    
 };
 
 export default userService;

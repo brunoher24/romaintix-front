@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectGame, updatePlayedWords, updateWordHasBeenFound } from '../../features/gameSlice';
 import { selectUser } from '../../features/userSlice';
 //services
+import userService from '../../services/userService';
 import { setCorrectEmojiToTemperature } from '../../services/utilities';
 // components
 import ProgressBar from "../ProgressBar/ProgressBar";
@@ -67,15 +68,14 @@ function PlaySection() {
             // TEST
             // const score = Math.round(Math.random() * 12430 - 6000) / 100;
             // TEST
-
-            // TODO
             try {
-                // const getWordScore = httpsCallable(functions, 'getWordScore');
-                // const result = await getWordScore({ wordIndex, wordBeeingPlayed })
-                const score = 12;
-                console.log(score);
-                // TODO si mot trouvé, dispatch(updateWordHasBeenFound(true))
-                const percents = score < 25 ? 0 : degreesPercents.find(dp => dp.d === score).p;
+                
+                const score = await userService.getWordScore(wordBeeingPlayed_, wordIndex);
+               if(score == 6431) {
+                dispatch(updateWordHasBeenFound(true));
+                return [];
+               }
+                const percents = score < 25 ? 0 : degreesPercents.find(dp => dp.d == score/100 ).p;
                 const newWord = {
                     value: wordBeeingPlayed_,
                     degrees: score,
