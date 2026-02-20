@@ -9,6 +9,8 @@ import seven from "../assets/numbers/7.png";
 import eight from "../assets/numbers/8.png";
 import nine from "../assets/numbers/9.png";
 
+import degreesPercents from "../assets/degreesPercents.json";
+
 // const generateDegreesPercentsJson = () => {
 //   const degreesPercents = [{d: 2500, p: 1}];
 
@@ -53,3 +55,41 @@ export const emojis = ["🥳", "😱", "🔥", "🥵", "😎", "🥶"];
     if (temperature < 64.3) return emojis[1]
     return emojis[0];
   };
+
+  export const scoreFormater = (result) => {
+    let nestedData = result;
+
+    while(nestedData.data) {
+      nestedData = nestedData.data
+    }
+    if(nestedData.error) {
+      console.log(nestedData.error);
+      return {error:nestedData.error};
+    }
+    const score = nestedData.similarity;
+    const degrees = Math.round((score * 10000 - 500)) / 100;
+    let percents;
+    if(degrees === 95) {
+      percents = 1000;
+    } else if (degrees > 62.59) {
+      percents = 999;
+    } else if (degrees < 25) {
+      percents = 0;
+    } else if(degrees >= 25 && degrees < 100) {
+      percents = degreesPercents.find(dp => dp.d === degrees ).p;
+    } else {
+      console.log("une erreur inconnue est survenue");
+      return {error: "une erreur inconnue est survenue"};
+    }
+    return {degrees, percents};
+  }
+
+  export const textFormater = (txt) => {
+   return txt
+   .replace(/[éèëê]/, "e")
+   .replace(/[àäâ]/, "a")
+   .replace(/[ùûü]/, "u")
+   .replace(/[îìï]/, "i")
+   .replace(/[ôòö]/, "o")
+   .replace(/ç/, "c").toLowerCase();
+  }

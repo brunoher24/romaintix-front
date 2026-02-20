@@ -43,7 +43,7 @@ function LoginForm() {
     <div className='LoginForm'>
       { isLoading && <Loader/> }
       <h2>Je me connecte</h2>
-      {errorLogin && <div className="alert-danger">Email ou mot de passe incorrect.</div>}
+      {errorLogin && <div className="alert-danger">Pseudo ou mot de passe incorrect.</div>}
 
       <form onSubmit={login}>
       <input

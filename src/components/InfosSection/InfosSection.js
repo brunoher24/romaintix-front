@@ -1,17 +1,21 @@
 // style
 import { useSelector } from "react-redux";
+import gameSlice, { selectGame } from "../../features/gameSlice";
 import { selectUser } from "../../features/userSlice";
 import "./InfosSection.css";
 
 
 
 const InfosSection = () => {
-    const { wordIndex } = useSelector(selectUser);
+    const { wordIndex, previousWord } = useSelector(selectUser);
+    const {playedWordsWiki} = useSelector(selectGame);
 
     return (
         <div className="infos-section">
-        <h1>Mot à trouver n° {wordIndex + 1} / 5</h1>
-
+          {wordIndex < 5 ? (
+            <div className="infos-section">
+        <h1>Mots trouvés {wordIndex} / 5</h1>
+        {previousWord && <p id="previous-word">Mot précédent : {previousWord}</p>}
         <table className="story">
           <thead>
             <tr><th className="number-top"><b>‰</b></th><th className="emoji-top">🌡</th><th className="number-top"><b>°C</b></th></tr>
@@ -23,6 +27,18 @@ const InfosSection = () => {
             <tr><td className="number-top">1</td><td className="emoji-top">😎</td><td className="number-top">24.99</td></tr>
             <tr><td className="number-top"></td><td className="emoji-top">🥶</td><td className="number-top">-0.01</td></tr>
           </tbody></table>
+            </div>
+          ) : (
+            <div className="top-played-words-wiki-list">
+              <ul>
+                {playedWordsWiki.map((word, i) => (
+                  <li key={i}> <span>{i+1} - {word}</span></li>
+                ))}
+              </ul>
+            </div>
+          )}
+       
+       
       </div>
     );
 };

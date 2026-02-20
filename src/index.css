@@ -17,9 +17,11 @@
   --dialog-bg: #F8F8F8;
   --dialog-shadow: #C8C8C8;
   --error: red;
-  --success-bg: lightgreen;
+  --success-bg: #90ee90;
   --success-shadow: #60BE60;
   --link: darkgreen;
+  --dark-grey-text: #646464;
+  --light-grey-text: #bababa;
 }
 
 @font-face {

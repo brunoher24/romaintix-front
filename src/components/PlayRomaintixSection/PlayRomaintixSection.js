@@ -12,12 +12,11 @@ import { setCorrectEmojiToTemperature } from '../../services/utilities';
 // components
 import ProgressBar from "../ProgressBar/ProgressBar";
 // assets
-import dico from "../../assets/dico.json";
-import degreesPercents from "../../assets/degreesPercents.json";
+// import dico from "../../assets/dico.json";
 // style
-import './PlaySection.css';
+import './PlayRomaintixSection.css';
 
-function PlaySection() {
+function PlayRomaintixSection() {
 
     const [lastPlayedWord, setLastPlayedWord] = useState({ value: "", score: 0, number: 0, percents: 0, emoji: "" });
     const [wordBeeingPlayed, setWordBeeingPlayed] = useState("");
@@ -25,7 +24,7 @@ function PlaySection() {
     const [errorMessageInvalidWord, setErrorMessageInvalidWord] = useState("");
 
     const { playedWords } = useSelector(selectGame);
-    const { wordIndex } = useSelector(selectUser)
+    const { accessToken, wordIndex } = useSelector(selectUser)
     const dispatch = useDispatch();
 
     // TEST
@@ -60,35 +59,41 @@ function PlaySection() {
         const index = playedWords.findIndex(w => w.value === wordBeeingPlayed_);
         if (index > -1) {
             setLastPlayedWord(playedWords[index]);
-        } else if (!dico.includes(wordBeeingPlayed_)) {
-            setErrorMessageInvalidWord("Essaye avec des vrais mots, c'est plus drôle.")
-        }
-        else {
+        } 
+        // else if (!dico.includes(wordBeeingPlayed_) && !dico.includes(wordBeeingPlayed_ + "s")) {
+        //     setErrorMessageInvalidWord("Essaye avec des vrais mots, c'est plus drôle.")
+        // }
+        else 
+        {
             setErrorMessageInvalidWord("");
             // TEST
             // const score = Math.round(Math.random() * 12430 - 6000) / 100;
             // TEST
             try {
-                
-                const score = await userService.getWordScore(wordBeeingPlayed_, wordIndex);
-               if(score == 6431) {
-                dispatch(updateWordHasBeenFound(true));
-                return [];
-               }
-                const percents = score < 25 ? 0 : degreesPercents.find(dp => dp.d == score/100 ).p;
+                let { degrees, percents, error } = await userService.getWordScore(wordBeeingPlayed_, wordIndex, accessToken);
+                if(error) {
+                    setErrorMessageInvalidWord("Une erreur est survenue !");
+                    return [];
+                }
+
+                if (degrees === 95) {
+                    degrees += 5
+                    dispatch(updateWordHasBeenFound(true));
+                    return [];
+                }
                 const newWord = {
                     value: wordBeeingPlayed_,
-                    degrees: score,
-                    percents: percents,
+                    degrees,
+                    percents,
                     number: playedWords.length + 1,
-                    emoji: setCorrectEmojiToTemperature(score)
+                    emoji: setCorrectEmojiToTemperature(degrees)
                 };
                 const playedWords_ = [...playedWords, newWord];
                 playedWords_.sort((a, b) => b.degrees - a.degrees);
                 setLastPlayedWord(newWord);
                 return [playedWords_, newWord];
             } catch (err) {
-            console.log("Une erreur est survenue !", err);
+                console.log("Une erreur est survenue !", err);
             }
         }
         return [];
@@ -105,7 +110,7 @@ function PlaySection() {
                 if (playedWordRewardIndex <= 0) {
                     playedWordRewardIndex_ = playedWords.length - 1;
                 } else {
-                    playedWordRewardIndex_ --;
+                    playedWordRewardIndex_--;
                 }
                 setPlayedWordRewardIndex(playedWordRewardIndex_);
                 setWordBeeingPlayed(playedWords[playedWordRewardIndex_].value);
@@ -114,7 +119,7 @@ function PlaySection() {
             if (playedWords.length > 0) {
                 let playedWordRewardIndex_ = playedWordRewardIndex;
                 if (playedWordRewardIndex === -1 || playedWordRewardIndex === playedWords.length - 1) {
-                   playedWordRewardIndex_ = 0;
+                    playedWordRewardIndex_ = 0;
                 } else {
                     playedWordRewardIndex_++;
                 }
@@ -125,7 +130,7 @@ function PlaySection() {
     };
 
     return (
-        <div className="PlaySection">
+        <div className="PlayRomaintixSection">
             <section className="play-section">
                 <form onSubmit={submitPlayForm}>
                     <input type="text" name="word" id="word-input" value={wordBeeingPlayed} onChange={playFormChangeHAndler} onKeyUp={getWordsHistoric} />
@@ -163,7 +168,7 @@ function PlaySection() {
                     </thead>
                     <tbody>
 
-                        {playedWords.map((word, index) => (
+                        {playedWords.filter(w => w.value !== lastPlayedWord.value).map((word, index) => (
                             <tr key={index} className={word.percents > 0 ? "bolder" : "guesses"}>
                                 <td className="align-right">{word.number}</td>
                                 <td className="word">{word.value}</td>
@@ -184,4 +189,4 @@ function PlaySection() {
     );
 }
 
-export default PlaySection;
+export default PlayRomaintixSection;

@@ -5,6 +5,8 @@ import StorageService from '../services/storageService';
 const initialState = {
   playedWords: new StorageService().getData("playedWords") || [],
   wordHasBeenFound: new StorageService().getData("wordHasBeenFound") || false,
+  playedWordsWiki: new StorageService().getData("playedWordsWiki") || [],
+  foundWordsWiki : new StorageService().getData("foundWordsWiki") || {},
 };
 
 export const gameSlice = createSlice({
@@ -16,6 +18,21 @@ export const gameSlice = createSlice({
       storage.setData("playedWords", action.payload);
       state.playedWords = action.payload;
     },
+    updatePlayedWordsWiki: (state, action) => {
+      const storage = new StorageService();
+      storage.setData("playedWordsWiki", action.payload);
+      state.playedWordsWiki = action.payload;
+    },
+    updateFoundWordsWiki: (state, action) => {
+      const storage = new StorageService();
+      storage.setData("foundWordsWiki", action.payload);
+      state.foundWordsWiki = action.payload;
+    },
+    resetPlayedWordsWiki: (state) => {
+      const storage = new StorageService();
+      storage.setData("playedWordsWiki", []);
+      state.playedWordsWiki = [];
+    },
     updateWordHasBeenFound: (state, action) => {
       state.wordHasBeenFound = action.payload;
     }
@@ -24,7 +41,7 @@ export const gameSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { updatePlayedWords, updateWordHasBeenFound } = gameSlice.actions
+export const { updatePlayedWords, updatePlayedWordsWiki, updateWordHasBeenFound, resetPlayedWordsWiki, updateFoundWordsWiki } = gameSlice.actions
 export const selectGame = state => state.game;
 
 

@@ -4,35 +4,40 @@ const initialState = {
   uid: "",
   nickname: "",
   wordIndex: -1,
-  firebaseIdToken: ""
+  accessToken: "",
+  previousWord: ""
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setLoggedInInfos: (state, action) => {
-        const {uid, nickname, wordIndex, firebaseIdToken} = action.payload;
+    setUserInfos: (state, action) => {
+        const {uid, nickname, wordIndex, previousWord} = action.payload;
         state.uid = uid;
         state.nickname = nickname;
         state.wordIndex = wordIndex;
-        state.firebaseIdToken = firebaseIdToken
+        state.previousWord = previousWord;
     },
 
     setWordIndex: (state, action) => {
-      state.wordIndex = action.payload;
+      const {wordIndex, previousWord} = action.payload;
+      state.wordIndex = wordIndex;
+      state.previousWord = previousWord;
+    },
+
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
     },
    
     resetUserInfos: (state) => {
-        state.uid = "";
-        state.nickname = "";
-        state.wordIndex = -1;
+      state = {...initialState};
     },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLoggedInInfos, setWordIndex, resetUserInfos } = userSlice.actions
+export const { setUserInfos, setWordIndex, setAccessToken, resetUserInfos } = userSlice.actions
 export const selectUser = state => state.user;
 
 

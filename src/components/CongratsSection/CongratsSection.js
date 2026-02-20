@@ -1,6 +1,6 @@
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { selectGame, updateWordHasBeenFound } from "../../features/gameSlice";
+import { selectGame, updateWordHasBeenFound, updatePlayedWords } from "../../features/gameSlice";
 // services
 import { emojis, numToEmojis } from "../../services/utilities";
 // style
@@ -22,8 +22,8 @@ const CongratsSection = () => {
   };
 
   const findNextWord = () => {
-    // TODO
     dispatch(updateWordHasBeenFound(false));
+    dispatch(updatePlayedWords([]));
   };
 
   return (

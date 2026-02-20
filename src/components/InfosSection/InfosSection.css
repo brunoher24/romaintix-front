@@ -2,6 +2,13 @@
     display: flex;
     flex-direction: column;
   }
+
+  #previous-word {
+    font-style: italic;
+    font-size: 12px;
+    font-weight: 900;
+    margin-top: -16px;
+  }
   
   .infos-section table.story {
     align-self: center;
@@ -15,4 +22,13 @@
   
   .story td {
     padding: 0.2em;
+  }
+
+  .top-played-words-wiki-list ul {
+    padding: 0;
+    list-style-type: none;
+  }
+
+  .top-played-words-wiki-list li {
+    padding: 0
   }

@@ -1,0 +1,96 @@
+.play-section {
+  padding-bottom: 0.8em;
+}
+
+.play-section, .matches-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.matches-section img {
+  margin: 4px;
+  width: 24px
+}
+
+.play-section form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .error-message-invalid-word {
+    font-weight: bold;
+    color: var(--error);
+    margin-left: 0.7em;
+  }
+  
+  #word-input {
+    font-size: 1.1em;
+    margin-left: 0.5em;
+    padding: 0.3em;
+    padding-left: 0.4em;
+    padding-right: 1.6em;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+  
+  #play-form-submit-input {
+    font-size: 1.1em;
+    margin-left: 0.5em;
+    padding: 0.3em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+  
+  .guess-table {
+    width: min(32em, 100%);
+    margin-top: 0.5em;
+  }
+  
+  th.number {
+    text-align: right;
+    padding-left: 0.3em;
+  }
+  
+  .word {
+    padding-left: 0.3em;
+  }
+  
+  .emoji, .emoji-td {
+    padding-left: 0.3em
+  }
+
+  .word-not-found {
+    border-radius: 4px;
+    height: 26px;
+    background-color: black;
+    margin: -10px 4px 30px 4px;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 1px #B8B9BA;
+  }
+
+  .wiki-page-section {
+    background-color: #F8F9FA;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: inset 2px 2px 2px #88898A, 2px 2px var(--body-edge);
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+  }
+
+  .wiki-page-section > * {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .wiki-page-section span {
+    margin: 1px;
+    display: flex;
+    align-items: center;
+  }

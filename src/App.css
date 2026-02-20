@@ -26,6 +26,7 @@
   color: var(--summary-color);
   border-radius: 25px;
   min-width: 15em;
+  position: relative;
 }
 
 .online-web-fonts-credits {
@@ -45,15 +46,59 @@ input::placeholder {
   font-style: italic;
 }
 
+.flex-ctnr {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 10px;
+}
+
+.game-switch {
+  box-shadow: inset 2px 2px 1px var(--body-edge);
+  text-shadow: 2px 2px var(--antiheader);
+  color: var(--header);
+  z-index: 2;
+  text-align: center;
+  border-radius: 25px 25px 0px 0px;
+  text-decoration: none;
+  width: 50%;
+  padding: 24px 0;
+}
+
+.game-switch > img {
+  height: 100px;
+}
+
+.game-switch > h2 {
+ margin: 0;
+}
+
+.game-switch.first {
+  background-color: var(--body-bg);
+  order: -1
+}
+
+.game-switch.second {
+  background-color: var(--antibody-bg);
+  z-index: 0;
+  box-shadow: inset 2px 2px 1px var(--antibody-edge), 3px 3px 3px var(--back-shadow);
+  color: var(--antiheader);
+  opacity: 0.9;
+}
+
+.game-switch.second h2 {
+  text-shadow: none;
+}
+
 .main-content {
-  margin: 32px 10px 5px 10px;
+  margin: -10px 0 5px 0;
   text-align: left;
   min-height: calc(100vh - 270px - 2.2em);
   background: var(--body-bg);
   box-shadow: inset 2px 2px 1px var(--body-edge), 3px 3px 3px var(--back-shadow);
-  margin-top: -10px;
   padding: 10px;
   position: relative;
   border-radius: 10px;
   z-index: 1;
+  width: 100%;
+  padding-top: 24px;
 }

@@ -8,7 +8,6 @@ import { FirebaseError } from 'firebase/app';
 
 import './SignupForm.css';
 import userService from '../../services/userService';
-import StorageService from '../../services/storageService';
 
 function SignupForm() {
   const [signupData, setSignupData] = useState({ nickname: "", password: "", passwordConfirm: "" });
@@ -28,7 +27,6 @@ function SignupForm() {
 
   const signup = async e => {
     e.preventDefault();
-    const storage = new StorageService();
     const auth = getAuth();
     const { nickname, password, passwordConfirm } = signupData;
     let hasError = false;
@@ -85,9 +83,6 @@ function SignupForm() {
         throw new FirebaseError({ code: 'auth/email-already-in-use' })
       }
       const { uid } = userCredential.user;
-      storage.setData('uid', uid);
-      storage.setData('nickname', nickname);
-      storage.setData('wordIndex', 0);
 
       await updateProfile(auth.currentUser, {
         displayName: nickname,
